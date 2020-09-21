@@ -1,12 +1,12 @@
 import React from 'react';
-import HomePage from './Components/HomePage/HomePage';
+import HomePage from './pages/homePage/HomePage';
 
 import './App.css';
 
 function App() {
   return (
     <div>
-      <HomePage></HomePage>
+      <HomePage />
     </div>
   );
 }
