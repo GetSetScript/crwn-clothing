@@ -11,12 +11,10 @@ export class ShopPage extends Component {
     render() {
         return (
             <div className='shop-page'>
-                {this.state.collections.map(collection => {
-                    return <CollectionPreview key={collection.id}
-                                            title={collection.title}
-                                            routeName={collection.RouteName}
-                                            items={collection.items}/>
-                })}
+                {this.state.collections.map(({id, ...props}) => {
+                        return <CollectionPreview key={id} {...props}/>
+                    })
+                }
             </div>
         )
     }

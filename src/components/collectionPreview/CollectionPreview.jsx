@@ -3,17 +3,14 @@ import CollectionItem from '../collection-item/CollectionItem';
 
 import './CollectionPreview.scss';
 
-const CollectionPreview = (props) => {
+const CollectionPreview = ({ title, items }) => {
     return (
         <div className='collection-preview'>
-            <h1 className='title'>{props.title.toUpperCase()}</h1>
+            <h1 className='title'>{title.toUpperCase()}</h1>
             <div className='preview'>
-                {props.items.filter((item, index) => index < 4)
-                            .map(item => {
-                                return <CollectionItem key={item.id} 
-                                                        name={item.name}
-                                                        imageUrl={item.imageUrl}
-                                                        price={item.price} />
+                {items.filter((item, index) => index < 4)
+                            .map(({id, ...props }) => {
+                                return <CollectionItem key={id} {...props} />
                             })
                 }
             </div>
