@@ -14,15 +14,16 @@ auth.onAuthStateChanged(async authUser => {
     }
 });
 
-const tryRegisterAuthUserWithFirestore = async (user) => {
-    if (!user) {
+const tryRegisterAuthUserWithFirestore = async (authUser) => {
+    if (!authUser) {
         return;
     }
 
-    const userReference = firestore.doc(`users/${user.uid}`);
+    const userReference = firestore.doc(`users/${authUser.uid}`);
     const snapshot = await userReference.get();
     if (!snapshot.exists) {
-        const { displayName, email } = user;
+        const email = authUser.email;
+        const displayName = email.substring(0, email.indexOf("@"));
         const createtedAt = new Date();
 
         try {
@@ -45,11 +46,11 @@ const tryRegisterAuthUserWithFirestore = async (user) => {
     })
 }
 
-export const createUserWithEmailAndPassword = async ({ email, password, displayName }) => {
+export const createUserWithEmailAndPassword = async (email, password) => {
     await auth.createUserWithEmailAndPassword(email, password);
 }
 
-export const signIn = async (email, password) => await auth.signInWithEmailAndPassword(email, password);
+export const signInWithEmailAndPassword = async (email, password) => await auth.signInWithEmailAndPassword(email, password);
 
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 

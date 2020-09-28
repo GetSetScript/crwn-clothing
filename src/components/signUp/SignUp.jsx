@@ -7,7 +7,6 @@ import './SignUp.scss';
 
 class SignUp extends React.Component {
     state = {
-        displayName: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -15,7 +14,7 @@ class SignUp extends React.Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const { password, confirmPassword } = this.state;
+        const { email, password, confirmPassword } = this.state;
 
         if (password !== confirmPassword) {
             alert("passwords dont match");
@@ -23,10 +22,9 @@ class SignUp extends React.Component {
         }
 
         try {
-            userRepository.createUserWithEmailAndPassword(this.state)
+            userRepository.createUserWithEmailAndPassword(email, password)
 
-            this.setState({ 
-                displayName: '',
+            this.setState({
                 email: '',
                 password: '',
                 confirmPassword: '' 
@@ -47,12 +45,6 @@ class SignUp extends React.Component {
                 <h2 className='title'>I do not have an account</h2>
                 <span>Sign up with your email and password</span>
                 <form className='sign-up-form' onSubmit={this.handleSubmit}>
-                    <FormInput type='text' 
-                                name='displayName' 
-                                value={this.state.displayName}
-                                onChange={this.handleChange}
-                                label='DisplayName'
-                                required />
                     <FormInput type='email' 
                                 name='email' 
                                 value={this.state.email}
