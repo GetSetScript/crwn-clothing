@@ -5,7 +5,7 @@ import HomePage from './pages/homePage/HomePage';
 import ShopPage from './pages/shopPage/ShopPage';
 import Header from './components/header/Header';
 import SignInAndSignUp from './pages/signInAndSignUp/SignInAndSignUp';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import userRepository from './repositories/user/userRepository';
 
 import './App.scss';
 
@@ -14,29 +14,17 @@ class App extends React.Component {
     currentUser: null
   }
 
-  unsubscribeFromAuth = null;
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {      
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapshot => {
-          this.setState({
-            currentUser: {
-              id: snapshot.id,
-              ...snapshot.data()
-            }
-          }, () => {console.log(this.state);});
-        });        
-      }
-      else {
-        this.setState({ currentUser: userAuth }, () => {console.log(this.state)});
-      }
+    userRepository.event.addEventListener('getUser', userData => {
+      console.log('hit mount')
+      this.setState({ currentUser: userData}, () => console.log(this.state.currentUser));
     });
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromAuth();
+    userRepository.event.addEventListener('getUser', userData => {
+      this.setState({ currentUser: userData}, () => console.log(this.state.currentUser));
+    });
   }
 
   render() {
