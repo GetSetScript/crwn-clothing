@@ -16,7 +16,6 @@ class App extends React.Component {
 
   componentDidMount() {
     userRepository.event.addEventListener('getUser', userData => {
-      console.log('hit mount')
       this.setState({ currentUser: userData}, () => console.log(this.state.currentUser));
     });
   }
