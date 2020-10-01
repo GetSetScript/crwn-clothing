@@ -7,7 +7,7 @@ import './Header.scss';
 
 const Header = () => {
     const { currentUser } = useContext(Authentication.AuthContext);
-
+    console.log(currentUser);
     return (
         <div className='header'>
             <Link to="/">

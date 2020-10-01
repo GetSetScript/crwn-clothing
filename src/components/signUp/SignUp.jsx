@@ -22,7 +22,7 @@ class SignUp extends React.Component {
         }
 
         try {
-            authenticationService.createUserWithEmailAndPassword(email, password)
+            authenticationService.createAuthUserWithEmailAndPassword(email, password)
 
             this.setState({
                 email: '',
