@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import CollectionPreview from '../../components/collectionPreview/CollectionPreview.jsx';
 
-import SHOP_DATA from './data/shopData.js';
+import { apparelRepository } from '../../services/apparel/repository/repositoryProvider';
 
 export class ShopPage extends Component {
     state = {
-        collections: SHOP_DATA
+        collections: apparelRepository.getAllApparel()
     }
 
     render() {

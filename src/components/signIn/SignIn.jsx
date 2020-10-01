@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CustomButton from '../customButton/CustomButton';
 import FormInput from '../formInput/FormInput';
 
-import userRepository from '../../repositories/user/userRepository';
+import { authenticationService } from '../../services/user/authentication/authenticationProvider';
 
 import './SignIn.scss';
 
@@ -17,7 +17,7 @@ export class SignIn extends Component {
         
         const { email, password } = this.state;
         try {
-            await userRepository.signInWithEmailAndPassword(email, password);
+            await authenticationService.signInWithEmailAndPassword(email, password);
             this.setState({ email: '', password: '' });
         } catch (error) {
             console.log(error);
@@ -50,7 +50,7 @@ export class SignIn extends Component {
                                 required/>
                     <div className='buttons'>
                         <CustomButton type="submit">Sign In</CustomButton>
-                        <CustomButton type="button" isGoogleSignin={true} onClick={userRepository.signInWithGoogle}>Sign in with Google</CustomButton>
+                        <CustomButton type="button" isGoogleSignin={true} onClick={authenticationService.signInWithGoogle}>Sign in with Google</CustomButton>
                     </div>
                 </form>
             </div>

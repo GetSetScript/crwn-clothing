@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomButton from '../customButton/CustomButton';
 import FormInput from '../formInput/FormInput';
-import userRepository from '../../repositories/user/userRepository';
+import { authenticationService } from '../../services/user/authentication/authenticationProvider';
 
 import './SignUp.scss';
 
@@ -22,7 +22,7 @@ class SignUp extends React.Component {
         }
 
         try {
-            userRepository.createUserWithEmailAndPassword(email, password)
+            authenticationService.createUserWithEmailAndPassword(email, password)
 
             this.setState({
                 email: '',

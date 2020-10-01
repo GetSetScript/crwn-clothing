@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import userRepository from '../../repositories/user/userRepository'
+import { Authentication, authenticationService } from '../../services/user/authentication/authenticationProvider';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import './Header.scss';
 
-const Header = ({ currentUser }) => {
+const Header = () => {
+    const { currentUser } = useContext(Authentication.AuthContext);
+
     return (
         <div className='header'>
             <Link to="/">
@@ -21,7 +23,7 @@ const Header = ({ currentUser }) => {
                 {(() => {
                     return currentUser ?
                     <div className='option'
-                        onClick={userRepository.signOut}>SIGN OUT</div>
+                        onClick={authenticationService.signOut}>SIGN OUT</div>
                     :
                     <Link className='option' to='/signin'>
                         SIGN IN
