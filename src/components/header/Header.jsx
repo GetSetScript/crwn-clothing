@@ -2,11 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { authenticationService } from '../../services/user/authentication/authenticationProvider';
 import { connect } from 'react-redux';
+import CartIcon from '../cartIcon/CartIcon';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import './Header.scss';
+import CartDropdown from '../cartDropdown/CartDropdown';
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
     console.log(currentUser);
     return (
         <div className='header'>
@@ -22,21 +24,29 @@ const Header = ({ currentUser }) => {
                 </Link>
                 {(() => {
                     return currentUser ?
-                    <div className='option'
-                        onClick={authenticationService.signOut}>SIGN OUT</div>
+                        <div className='option'
+                            onClick={authenticationService.signOut}>SIGN OUT</div>
                     :
-                    <Link className='option' to='/signin'>
-                        SIGN IN
-                    </Link>
-                })()}               
+                        <Link className='option' to='/signin'>
+                            SIGN IN
+                        </Link>
+                })()}                
+                <CartIcon/>           
             </div>
+            {(() => {
+                return hidden ?
+                    null
+                :
+                    <CartDropdown />                        
+            })()}
         </div>
     )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => {
     return {
-        currentUser: state.user.currentUser
+        currentUser,
+        hidden
     };
 }
 
