@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react'
 import { Link } from 'react-router-dom';
-import { Authentication, authenticationService } from '../../services/user/authentication/authenticationProvider';
+import { authenticationService } from '../../services/user/authentication/authenticationProvider';
+import { connect } from 'react-redux';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import './Header.scss';
 
-const Header = () => {
-    const { currentUser } = useContext(Authentication.AuthContext);
+const Header = ({ currentUser }) => {
     console.log(currentUser);
     return (
         <div className='header'>
@@ -34,4 +34,10 @@ const Header = () => {
     )
 }
 
-export default Header
+const mapStateToProps = state => {
+    return {
+        currentUser: state.user.currentUser
+    };
+}
+
+export default connect(mapStateToProps)(Header);

@@ -1,39 +1,47 @@
-import React, { useEffect, useState} from 'react'
+import React from 'react'
 import { auth } from '../../../firebase/firebaseConfig';
 import { userRepository } from '../../repository/repositoryProvider';
+import { connect } from 'react-redux';
+import { setCurrentUser } from '../../redux/userActions';
 
-const AuthContext = React.createContext();
 
-const AuthProvider = ({children}) => {
-    const [currentUser, setCurretUser] = useState(null);
-    const [pending, setPending] = useState(true);
+class Authentication extends React.Component {
 
-    useEffect(() => {
-        auth.onAuthStateChanged(async authUser => {
-            if (authUser) {
-                const userReference = await userRepository
-                                                .createUserFromAuthentication(authUser)
-                
-                userReference.onSnapshot(snapshot => {        
-                    setCurretUser({id: snapshot.id, ...snapshot.data()});
-                    setPending(false);                
-                });
-            } else {
-                setCurretUser(authUser); //if cant create?
-                setPending(false);  
-            }
-        });
-    }, [])
-
-    if(pending) {
-        return <div>Loading</div>
+    componentDidMount() {
+        this.subscribeToAuthStateChanged();
     }
 
-    return (
-        <AuthContext.Provider value={{currentUser}}>
-            {children}
-        </AuthContext.Provider>
-    )
+    componentWillUnmount() {
+        this.subscribeToAuthStateChanged();
+    }
+
+    subscribeToAuthStateChanged = () => {
+        const { setCurrentUser } = this.props;
+
+        auth.onAuthStateChanged(async authUser => {
+            if (authUser) {
+                const userReference = await userRepository.createUserFromAuthentication(authUser)
+                
+                userReference.onSnapshot(snapshot => {        
+                    setCurrentUser({id: snapshot.id, ...snapshot.data()});
+                });
+            } else {
+                setCurrentUser(authUser); //if cant create?
+            }
+        });
+    }
+    
+    render() {
+        return(
+            <div></div>
+        )
+    }
 }
 
-export { AuthContext, AuthProvider };
+const mapDispatchToProps = dispatch => {
+    return {
+        setCurrentUser: user => dispatch(setCurrentUser(user))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Authentication);
