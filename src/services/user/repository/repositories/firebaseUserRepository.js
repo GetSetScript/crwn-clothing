@@ -1,4 +1,5 @@
 import { firestore } from '../../../firebase/firebaseConfig';
+import { AuthUser } from '../../models/authUser';
 
 const createUserFromAuthentication = async (authUser) => {
     if (!authUser) {
@@ -8,16 +9,12 @@ const createUserFromAuthentication = async (authUser) => {
     const userReference = firestore.doc(`users/${authUser.uid}`);
     const snapshot = await userReference.get();
     if (!snapshot.exists) {
-        const email = authUser.email;
-        const displayName = email.substring(0, email.indexOf("@"));
-        const createtedAt = new Date();
-
+        let user = new AuthUser({ displayName: authUser.email.substring(0, authUser.email.indexOf("@")),
+                                email: authUser.email,
+                                createdAt: new Date()
+                            });
         try {
-            await userReference.set({
-                displayName,
-                email,
-                createtedAt                
-            })
+            await userReference.set({...user})
         } catch (error) {
             console.log("error creating user", error.message)
         }

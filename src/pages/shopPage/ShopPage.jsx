@@ -11,9 +11,9 @@ export class ShopPage extends Component {
     render() {
         return (
             <div className='shop-page'>
-                {this.state.collections.map(({id, ...props}) => {
-                        return <CollectionPreview key={id} {...props}/>
-                    })
+                {this.state.collections.map(({ id, ...props}) => {
+                                            return <CollectionPreview key={id} {...props} />
+                                        })
                 }
             </div>
         )

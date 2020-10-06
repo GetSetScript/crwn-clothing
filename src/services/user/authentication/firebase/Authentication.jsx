@@ -3,6 +3,7 @@ import { auth } from '../../../firebase/firebaseConfig';
 import { userRepository } from '../../repository/repositoryProvider';
 import { connect } from 'react-redux';
 import { setCurrentUser } from '../../redux/userActions';
+import { User } from '../../models/user';
 
 
 class Authentication extends React.Component {
@@ -22,11 +23,11 @@ class Authentication extends React.Component {
             if (authUser) {
                 const userReference = await userRepository.createUserFromAuthentication(authUser)
                 
-                userReference.onSnapshot(snapshot => {        
-                    setCurrentUser({id: snapshot.id, ...snapshot.data()});
+                userReference.onSnapshot(snapshot => {      
+                    setCurrentUser(new User({id: snapshot.id, ...snapshot.data()}));
                 });
             } else {
-                setCurrentUser(authUser); //if cant create?
+                setCurrentUser(null);
             }
         });
     }
